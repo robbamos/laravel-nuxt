@@ -24,7 +24,7 @@
           <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
           <div class="text-xs-right">
             <em>
-              <small>&mdash; Rob Amos</small>
+              <small>&mdash; John Leider</small>
             </em>
           </div>
           <hr class="my-3">
