@@ -1,16 +1,20 @@
 # Nuxt + Vuetify + Laravel 
 
 
-## Backend setup
+
+## Quick Start
+
+### Backend setup
 ```
 composer install
 php artisan migrate
 php artisan passport:install
 php artisan passport:client --personal
 php artisan db:init
+php artisan serve --port=3001
 ```
 
-## Frontend setup
+### Frontend setup
 
 ```
 npm i
