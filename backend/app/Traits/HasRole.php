@@ -8,7 +8,7 @@ use App\Models\Role;
  * Has Role trait
  *
  * @category Trait
- * @package  Vertical
+ * @package  laravel-nuxt
  * @author   Rob Amos <r.amos21@outlook.com>
  * @license  MIT http://opensource.org/licenses/MIT
  * @link     https://github.com/robbamos/laravel-nuxt

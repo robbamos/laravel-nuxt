@@ -11,7 +11,7 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
  * Auth User Model.
  *
  * @category Model
- * @package  Vertical
+ * @package  laravel-nuxt
  * @author   Rob Amos <r.amos21@outlook.com>
  * @license  MIT http://opensource.org/licenses/MIT
  * @link     https://github.com/robbamos/laravel-nuxt

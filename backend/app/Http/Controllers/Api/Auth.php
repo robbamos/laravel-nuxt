@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
  * Auth User Model.
  *
  * @category Controller
- * @package  Vertical
+ * @package  laravel-nuxt
  * @author   Rob Amos <r.amos21@outlook.com>
  * @license  MIT http://opensource.org/licenses/MIT
  * @link     https://github.com/robbamos/laravel-nuxt

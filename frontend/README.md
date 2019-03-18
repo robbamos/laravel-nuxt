@@ -1,6 +1,6 @@
 # frontend
 
-> Nuxt SSR frontend for verticals
+> Nuxt SSR frontend for laravel-nuxt
 
 ## Build Setup
 
