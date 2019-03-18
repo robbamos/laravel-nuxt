@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth as AuthHandler;
 
 /**
  * Auth User Model.
@@ -22,55 +21,42 @@ class Auth extends Controller
      * API auth login
      *
      * @param Request $request
-     * @return User user with api token
+     *
+     * @return \Illuminate\Http\JsonResponse
      */
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-
-        if (AuthHandler::attempt($credentials)) {
-            $user = auth()->user();
-            $token = $user->createToken('apiToken')->accessToken;
-            return $this->respondSuccess(['user' => $user, 'token' => $token, 'role' => $user->role->name]);
+        if (!$token = auth()->attempt($credentials)) {
+            return $this->respondNotAuthorised();
         }
-
-        return $this->respondNotAuthorised();
-
+        return $this->respondWithToken($token);
     }
 
     /**
      * API Authenticated user
      *
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function me()
     {
-        $user = auth()->user();
-
-        if ($user != null) {
-            return $this->respondSuccess(['user' => $user, 'role' => $user->role->name]);
-        }
-
-        return $this->respondNotAuthorised();
+        return $this->respondSuccess(
+            [
+                'user' => auth()->user(),
+                'role' => auth()->user()->role->name,
+            ]
+        );
     }
 
     /**
-     * API Auth logout
+     * Log the user out (Invalidate the token).
      *
-     * @return void
+     * @return \Illuminate\Http\JsonResponse
      */
     public function logout()
     {
-        try {
-            $user = auth()->user();
-            foreach ($user->tokens as $token) {
-                $token->revoke();
-            }
-            return $this->respondSuccess();
-
-        } catch (Exception $e) {
-            return $this->respondNotAuthorised();
-        }
+        auth()->logout();
+        return $this->respondSuccess(['message' => 'Successfully logged out']);
     }
 
     /**
@@ -99,6 +85,34 @@ class Auth extends Controller
             ]
         );
 
+    }
+
+    /**
+     * Refresh a token.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function refresh()
+    {
+        return $this->respondWithToken(auth()->refresh());
+    }
+
+    /**
+     * Get the token array structure.
+     *
+     * @param  string $token
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    protected function respondWithToken($token)
+    {
+        return $this->respondSuccess(
+            [
+                'access_token' => $token,
+                'token_type' => 'bearer',
+                'expires_in' => auth()->factory()->getTTL() * 60,
+            ]
+        );
     }
 
 }

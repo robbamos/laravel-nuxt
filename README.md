@@ -1,16 +1,16 @@
 # Nuxt + Vuetify + Laravel 
 
+## Development Quick Start
 
-
-## Quick Start
 
 ### Backend setup
+Within the backend directory:
+
 ```
 composer install
-php artisan migrate
-php artisan passport:install
-php artisan passport:client --personal
-php artisan db:init
+php artisan key:generate
+php artisan migrate --seed
+php artisan jwt:secret
 php artisan serve --port=3001
 ```
 

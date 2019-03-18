@@ -1,12 +1,11 @@
 <template>
   <v-app>
-    <navbar />
+    <navbar/>
     <v-content>
       <v-container>
         <nuxt/>
       </v-container>
     </v-content>
-    
 
     <v-footer :fixed="fixed" app>
       <span>&copy; {{ new Date().getFullYear() }}</span>
@@ -19,8 +18,7 @@ import Navbar from "@/components/Navbar.vue";
 
 export default {
   components: {
-    Navbar,
-
+    Navbar
   },
   data() {
     return {
@@ -40,21 +38,10 @@ export default {
   },
   methods: {
     logout() {
-      return this.$store
-        .dispatch("auth/logout")
-        .then(res => {
-          console.log(res);
-          this.$router.push("/");
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      this.$auth.logout();
     }
   },
   computed: {
-    isLoggedIn() {
-      return this.$store.getters["auth/isLoggedIn"];
-    },
     menu() {
       return this.$store.getters["auth/topNavMenu"];
     }

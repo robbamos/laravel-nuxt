@@ -1,7 +1,8 @@
-module.exports = {
-  /*
-   ** Headers of the page
-   */
+export default {
+  env: {
+    baseUrl: process.env.BASE_URL || 'http://localhost:3000',
+    apiUrl: process.env.API_URL || 'http://localhost:3001'
+  },
   head: {
     title: 'Laravel + Nuxt',
     meta: [{
@@ -30,49 +31,66 @@ module.exports = {
   },
   plugins: [
     '~/plugins/vuetify.js',
-    '~/api/init.js'
+    '~/plugins/api.js',
   ],
   css: [
     '~/assets/style/app.styl'
   ],
   modules: [
-    '@nuxtjs/pwa',
+    '@nuxtjs/axios',
+    '@nuxtjs/auth'
   ],
-  workbox: {
-    // Workbox options
-    // runtimeCaching: [{
-    //   // Should be a regex string. Compiles into new RegExp('https://my-cdn.com/.*')
-    //   urlPattern: 'https://my-cdn.com/.*',
-    //   // Defaults to `networkFirst` if omitted
-    //   handler: 'cacheFirst',
-    //   // Defaults to `GET` if omitted
-    //   method: 'GET'
-    // }],
+  axios: {
+    proxy: true,
+    prefix: '/api',
+    credentials: true,
+    debug: true,
+
+  },
+  proxy: {
+    '/api/': {
+      target: process.env.API_URL || 'http://localhost:3001'
+    }
+  },
+  auth: {
+    redirect: {
+      login: '/login',
+      logout: '/',
+      callback: '/login',
+      home: '/dashboard'
+    },
+
+    strategies: {
+      local: {
+        endpoints: {
+          login: {
+            url: '/login',
+            method: 'post',
+            propertyName: 'access_token'
+          },
+          logout: {
+            url: '/logout',
+            method: 'post'
+          },
+          user: {
+            url: '/me',
+            method: 'get',
+            propertyName: 'user'
+          }
+        },
+        tokenRequired: true,
+        tokenType: 'Bearer',
+      }
+    }
   },
   manifest: {
-    name: 'Nuxt + Laravel',
+    name: 'Laravel + Nuxt',
     lang: 'en'
   },
-  /*
-   ** Customize the progress bar color
-   */
   loading: {
     color: '#3B8070'
+  },
+  build: {
+    extractCSS: true,
   }
-  /*
-   ** Build configuration
-   */
-  // build: {
-  //   extractCSS: true,
-  //   extend (config, ctx) {
-  //     // Run ESLint on save
-  //     if (ctx.isDev && ctx.isClient) {
-  //       config.module.rules.push({
-  //         enforce: 'pre',
-  //         test: /\.(js|vue)$/,
-  //         loader: 'eslint-loader',
-  //         exclude: /(node_modules)/
-  //       })
-  //     }
-  //   }
 }

@@ -44,10 +44,8 @@
 </template>
 
 <script>
-const Cookie = process.client ? require("js-cookie") : undefined;
-
 export default {
-  middleware: "noauth",
+  middleware: ["auth"],
   layout: "auth",
   head() {
     return { title: "Login" };
@@ -70,19 +68,18 @@ export default {
   },
   methods: {
     login() {
-      this.$store
-        .dispatch("auth/login", {
-          email: this.email,
-          password: this.password
+      this.$auth
+        .login({
+          data: {
+            email: this.email,
+            password: this.password
+          }
         })
         .then(resp => {
           console.log(resp);
-          this.$router.push('/dashboard')
         })
         .catch(err => {
           console.log(err);
-          this.failed = true;
-          this.error = err.response.data.message;
         });
     },
 
@@ -91,8 +88,14 @@ export default {
     }
   },
   computed: {
-    loading() {
-      return this.$store.state.auth.loading;
+    redirect() {
+      return (
+        this.$route.query.redirect &&
+        decodeURIComponent(this.$route.query.redirect)
+      );
+    },
+    isCallback() {
+      return Boolean(this.$route.query.callback);
     }
   }
 };

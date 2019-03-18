@@ -22,7 +22,7 @@
             @submit.prevent="register"
             @keyup.enter.native="register"
           >
-            <v-text-field v-model="user.name"  label="Name" required></v-text-field>
+            <v-text-field v-model="user.name" label="Name" required></v-text-field>
             <v-text-field v-model="user.email" :rules="emailRules" label="E-mail" required></v-text-field>
             <v-text-field
               v-model="user.password"
@@ -50,10 +50,10 @@
 const Cookie = process.client ? require("js-cookie") : undefined;
 
 export default {
-  middleware: "noauth",
+  middleware: ["auth"],
   layout: "auth",
   head() {
-    return { title: 'Login'};
+    return { title: "Login" };
   },
   data() {
     return {
@@ -64,12 +64,10 @@ export default {
       user: {
         name: "",
         email: "",
-        password: "",
+        password: ""
       },
       remember: false,
-      nameRules: [
-        v => !!v || "Name is required",
-      ],
+      nameRules: [v => !!v || "Name is required"],
       emailRules: [
         v => !!v || "E-mail is required",
         v => /.+@.+/.test(v) || "E-mail must be valid"
@@ -90,7 +88,7 @@ export default {
           console.log(errors);
           this.valid = false;
           this.failed = true;
-          console.log(errors.response)
+          console.log(errors.response);
           this.errors = errors.response.data.errors;
         });
     },
@@ -101,7 +99,7 @@ export default {
   },
   computed: {
     loading() {
-      return this.$store.state.auth.loading
+      return this.$store.state.auth.loading;
     }
   }
 };
