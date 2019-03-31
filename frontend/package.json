@@ -1,7 +1,7 @@
 {
-  "name": "Laravel + Nuxt",
+  "name": "laravel_nuxt",
   "version": "1.0.0",
-  "description": "Laravel + Nuxt",
+  "description": "Quick start template for a frontend project powered by Nuxt, and backend by Laravel 5.7",
   "author": "Rob Amos <r.amos21@outlook.com>",
   "private": true,
   "config": {
