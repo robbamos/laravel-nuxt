@@ -1,5 +1,5 @@
 <template>
-    <v-layout column justify-center align-center>
+  <v-layout column justify-center align-center>
     <v-flex xs12 sm8 md6>
       <div class="text-xs-center">
         <img src="/v.png" alt="Vuetify.js" class="mb-5">
@@ -7,21 +7,24 @@
       <v-card>
         <v-card-title class="headline">Welcome {{ user }} to the Nuxt.js + Laravel template</v-card-title>
         <v-card-text>
-          <p>Vuetify is a progressive Material Design component framework for Vue.js. It was designed to empower developers to create amazing applications.</p>
-          <p>For more information on Vuetify, check out the
-            <a href="https://vuetifyjs.com" target="_blank">documentation</a>.
-          </p>
-          <p>If you have questions, please join the official
-            <a href="https://chat.vuetifyjs.com/" target="_blank" title="chat">discord</a>.
-          </p>
-          <p>Find a bug? Report it on the github
+          <p>Welcome to the Laravel + Nuxt quick start template! This template aims to provide an easy to use boilerplate for a nuxt powered frontend app that consumes a laravel backend api.</p>
+          <p>Currently this template is configured with the excellent Vuetify framework.</p>
+          <p>
+            For more information on Vuetify, check out the
             <a
-              href="https://github.com/vuetifyjs/vuetify/issues"
+              href="https://vuetifyjs.com"
+              target="_blank"
+            >documentation</a>.
+          </p>
+
+          <p>
+            Find a bug? Report it on the github
+            <a
+              href="https://github.com/robbamos/laravel-nuxt/issues"
               target="_blank"
               title="contribute"
             >issue board</a>.
           </p>
-          <p>Thank you for developing with Vuetify and I look forward to bringing more exciting features in the future.</p>
           <div class="text-xs-right">
             <em>
               <small>&mdash; Rob Amos</small>
@@ -43,19 +46,17 @@
 
 
 <script>
-import Drawer from '@/components/Dashboard/Drawer.vue'
+import Drawer from "@/components/Dashboard/Drawer.vue";
 export default {
-    layout: 'dashboard',
-    middleware: ['auth'],   
-    components: {
-        Drawer
-    },
-    computed: {
-        user () {
-            return this.$store.state.auth.user.name
-        }
+  layout: "dashboard",
+  middleware: ["auth"],
+  components: {
+    Drawer
+  },
+  computed: {
+    user() {
+      return this.$store.state.auth.user.name;
     }
-
-
-}
+  }
+};
 </script>

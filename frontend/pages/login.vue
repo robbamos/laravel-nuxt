@@ -1,28 +1,22 @@
 <template>
   <v-layout align-center justify-center>
-    <v-flex xs12 sm8 md4>
+    <v-flex xs12 sm8 md6>
       <v-card class="elevation-12">
         <v-toolbar dark color="primary">
           <v-toolbar-title>Login</v-toolbar-title>
         </v-toolbar>
         <v-card-text>
           <v-alert v-model="failed" type="error" :dismissible="true">{{ error }}</v-alert>
-          <v-form
-            ref="form"
-            v-model="valid"
-            lazy-validation
-            @submit.prevent="login"
-            @keyup.enter.native="login"
-          >
-            <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
+          <v-form ref="form" lazy-validation @submit.prevent="login" @keyup.enter.native="login">
+            <v-text-field v-model="user.email" :rules="emailRules" label="E-mail" required></v-text-field>
             <v-text-field
-              v-model="password"
-              :append-icon="show1 ? 'visibility_off' : 'visibility'"
+              v-model="user.password"
+              :append-icon="passwordVisible ? 'visibility_off' : 'visibility'"
               :rules="passwordRules"
-              :type="show1 ? 'text' : 'password'"
+              :type="passwordVisible ? 'text' : 'password'"
               name="input-10-1"
               label="Password"
-              @click:append="show1 = !show1"
+              @click:append="passwordVisible = !passwordVisible"
             ></v-text-field>
 
             <!-- <v-checkbox v-model="remember" label="Remember Me" required></v-checkbox> -->
@@ -30,13 +24,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn
-            type="submit"
-            color="primary"
-            :disabled="!valid || loading"
-            :loading="loading"
-            @click.prevent="login"
-          >Login</v-btn>
+          <v-btn type="submit" color="primary" @click.prevent="login">Login</v-btn>
         </v-card-actions>
       </v-card>
     </v-flex>
@@ -52,12 +40,13 @@ export default {
   },
   data() {
     return {
-      valid: true,
-      show1: false,
+      passwordVisible: false,
       failed: false,
       error: null,
-      email: "",
-      password: "",
+      user: {
+        email: "",
+        password: ""
+      },
       remember: false,
       emailRules: [
         v => !!v || "E-mail is required",
@@ -70,10 +59,7 @@ export default {
     login() {
       this.$auth
         .login({
-          data: {
-            email: this.email,
-            password: this.password
-          }
+          data: this.user
         })
         .then(resp => {
           console.log(resp);

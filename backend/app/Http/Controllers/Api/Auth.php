@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 /**
  * Auth User Model.
@@ -17,6 +18,8 @@ use Illuminate\Http\Request;
  */
 class Auth extends Controller
 {
+
+
     /**
      * API auth login
      *
@@ -68,23 +71,21 @@ class Auth extends Controller
     {
         $validated = $request->validate(
             [
-                'name' => 'required|min:3|max:200',
-                'password' => 'required|min:6|max:25',
-                'email' => 'required|unique:users',
+                'name' => ['required', 'string', 'max:255'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', 'string', 'min:6'],
             ]
         );
         // return $validated;
-        $newUser = User::create($validated);
-        $newUser->assignRole('user');
-        $token = $newUser->createToken('apiToken')->accessToken;
-        return $this->respondSuccess(
-            [
-                'user' => $newUser,
-                'token' => $token,
-                'role' => $newUser->role->name,
-            ]
-        );
 
+        $newUser = User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => Hash::make($validated['password'])
+        ]);
+
+
+        return $this->respondSuccess($newUser);
     }
 
     /**
@@ -109,10 +110,9 @@ class Auth extends Controller
         return $this->respondSuccess(
             [
                 'access_token' => $token,
-                'token_type' => 'bearer',
+                'token_type' => 'Bearer',
                 'expires_in' => auth()->factory()->getTTL() * 60,
             ]
         );
     }
-
 }
